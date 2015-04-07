@@ -77,7 +77,7 @@ public class GraphingData extends JPanel {
 
         for (int i = 0; i < 6; i++) {
             renderer.setSeriesLinesVisible(i, true);
-            if (i != 2)
+            if (i != 3)
                 renderer.setSeriesShape(i, shape);
             else
                 renderer.setSeriesShape(i, shape1);
