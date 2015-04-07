@@ -17,7 +17,7 @@ public class GUI extends JFrame {
     public GUI() {
         setSize(1100, 500);
         setLocationRelativeTo(null);
-        setTitle("Interpolation");
+        setTitle("Gaussian Interpolation");
         setLayout(new FlowLayout());
         add(butPan);
         add(graph);
