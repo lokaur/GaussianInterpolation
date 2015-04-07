@@ -18,13 +18,10 @@ import javax.swing.*;
 
 public class GraphingData extends JPanel {
 
-    private int k[] = new int[5];
     private XYPlot plot;
     private JFreeChart chart;
     private ChartPanel chartPanel;
-    private ValueAxis yAxis;
-    private ValueAxis xAxis;
-    private double a = 0, b = 10, c = 0, d = 10;
+    private double a = 0, b = 10, c = -5, d = 5;
 
     public GraphingData() {
         final XYDataset dataset = createDataset();
@@ -45,11 +42,6 @@ public class GraphingData extends JPanel {
         this.c = c;
         this.d = d;
     }
-
-    public void setKey(int k[]) {
-        this.k = k;
-    }
-
 
     private XYDataset createDataset() {
         return new XYSeriesCollection();
@@ -74,8 +66,8 @@ public class GraphingData extends JPanel {
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
 
-        yAxis = plot.getRangeAxis();
-        xAxis = plot.getDomainAxis();
+        ValueAxis yAxis = plot.getRangeAxis();
+        ValueAxis xAxis = plot.getDomainAxis();
         yAxis.setRange(c, d);
         xAxis.setRange(a, b);
 
@@ -83,21 +75,25 @@ public class GraphingData extends JPanel {
         Shape shape = new Ellipse2D.Double(0, 0, 0.01, 0.01);
         Shape shape1 = new Ellipse2D.Double(0, 0, 5, 5);
 
-        int j = 0;
-        for(int i = 0; i < 2; i++)
-            j += k[i];
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             renderer.setSeriesLinesVisible(i, true);
-            if (k[2] == 1) {
-                renderer.setSeriesShape(j+1, shape1);
-            } else {
-                renderer.setSeriesShape(j+1, shape);
-            }
-            renderer.setSeriesShape(i, shape);
+            if (i != 2)
+                renderer.setSeriesShape(i, shape);
+            else
+                renderer.setSeriesShape(i, shape1);
         }
 
-        for (int i = 0; i < 5; i++)
+        //Set lines color
+        renderer.setSeriesPaint(0, Color.RED);
+        renderer.setSeriesPaint(1, Color.BLUE);
+        renderer.setSeriesPaint(2, Color.GREEN);
+        renderer.setSeriesPaint(3, Color.BLACK);
+        renderer.setSeriesPaint(4, Color.CYAN);
+        renderer.setSeriesPaint(5, Color.MAGENTA);
+
+        for (int i = 0; i < 6; i++) {
             plot.setRenderer(i, renderer);
+        }
 
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());

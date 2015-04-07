@@ -42,16 +42,22 @@ public class GUI extends JFrame {
     }
 
     private XYDataset createDataset(Gauss func) {
-        int k[] = new int[5];
         final XYSeriesCollection dataset = new XYSeriesCollection();
         double step = 0.001;
+        final XYSeries seriesFx = new XYSeries("f(x)");
+        final XYSeries seriesPnx = new XYSeries("Pn(x)");
+        final XYSeries seriesRnx = new XYSeries("rn(x)");
+        final XYSeries seriesDelta = new XYSeries("δ(rn(x))");
+        final XYSeries seriesDFx = new XYSeries(("∂f(x)"));
+        final XYSeries seriesDPnx = new XYSeries(("∂Pn(x)"));
+
         if (butPan.getFx()) {
-            k[0] = 1;
-            final XYSeries series = new XYSeries("f(x)");
             for (double x = butPan.getA(); x < butPan.getB(); x += step) {
-                series.add(x, func.fx(x));
+                seriesFx.add(x, func.fx(x));
             }
-            dataset.addSeries(series);
+            dataset.addSeries(seriesFx);
+        } else {
+            dataset.addSeries(seriesFx);
         }
 
 //        if (butPan.getFx()) {
@@ -76,38 +82,35 @@ public class GUI extends JFrame {
 
         double newStep;
         if(butPan.getPnx()) {
-            k[1] = 1;
-            final XYSeries series = new XYSeries("Pn(x)");
             func.setPnx(step, butPan.getA(), butPan.getB());
-            newStep = (double)(Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
+            newStep = (Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
             double x = butPan.getA();
             do {
-                series.add(x, func.pnx(x));
+                seriesPnx.add(x, func.pnx(x));
                 x += newStep;
             } while (x < butPan.getB());
-            series.add(butPan.getB(), func.pnx(butPan.getB()));
-            dataset.addSeries(series);
+            seriesPnx.add(butPan.getB(), func.pnx(butPan.getB()));
+            dataset.addSeries(seriesPnx);
+        } else {
+            dataset.addSeries(seriesPnx);
         }
 
         if (butPan.getRnx()) {
-            k[2] = 1;
-            final XYSeries series = new XYSeries(("rn(x)"));
             func.setPnx(step, butPan.getA(), butPan.getB());
-            newStep = (double)(Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
+            newStep = (Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
             double x = butPan.getA();
             do {
-                series.add(x, func.rnx(x));
+                seriesRnx.add(x, func.rnx(x));
                 x += newStep;
             } while (x < butPan.getB());
-            series.add(butPan.getB(), func.rnx(butPan.getB()));
-            dataset.addSeries(series);
+            seriesRnx.add(butPan.getB(), func.rnx(butPan.getB()));
+            dataset.addSeries(seriesRnx);
 //            for (double x = butPan.getA(); x < butPan.getB(); x += step)
 //                series.add(x, func.rnx(x));
 //            dataset.addSeries(series);
 
             double maxX = 0;
             double maxY = 0;
-            final XYSeries series1 = new XYSeries("δ(rn(x))");
             for (double i = butPan.getA(); i < butPan.getB(); i += step) {
                 if(func.rnx(i) > maxY) {
                     maxX =  i;
@@ -115,34 +118,35 @@ public class GUI extends JFrame {
                 }
             }
             maxX -= step;
-            series1.add(maxX, maxY);
-            dataset.addSeries(series1);
+            seriesDelta.add(maxX, maxY);
+            dataset.addSeries(seriesDelta);
+        } else {
+            dataset.addSeries(seriesRnx);
+            dataset.addSeries(seriesDelta);
         }
 
         if (butPan.getDfx()) {
-            k[3] = 1;
-            final XYSeries series = new XYSeries(("∂f(x)"));
             for (double x = butPan.getA(); x < butPan.getB(); x += step) {
-                series.add(x, func.dfx(x));
+                seriesDFx.add(x, func.dfx(x));
             }
-            dataset.addSeries(series);
+            dataset.addSeries(seriesDFx);
+        } else {
+            dataset.addSeries(seriesDFx);
         }
 
         if (butPan.getDpnx()) {
-            k[4] = 1;
-            final XYSeries series = new XYSeries(("∂Pn(x)"));
             func.setPnx(step, butPan.getA(), butPan.getB());
-            newStep = (double)(Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
+            newStep = (Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
             double x = butPan.getA();
             do {
-                series.add(x, func.dpnx(x));
+                seriesDPnx.add(x, func.dpnx(x));
                 x += newStep;
             } while (x < butPan.getB());
-            series.add(butPan.getB(), func.dpnx(butPan.getB()));
-            dataset.addSeries(series);
+            seriesDPnx.add(butPan.getB(), func.dpnx(butPan.getB()));
+            dataset.addSeries(seriesDPnx);
+        } else {
+            dataset.addSeries(seriesDPnx);
         }
-
-        graph.setKey(k);
 
         return dataset;
     }
