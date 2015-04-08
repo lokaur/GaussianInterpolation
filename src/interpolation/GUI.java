@@ -43,7 +43,7 @@ public class GUI extends JFrame {
 
     private XYDataset createDataset(Gauss func) {
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        double step = 0.001;
+        double step = 0.01;
         final XYSeries seriesFx = new XYSeries("f(x)");
         final XYSeries seriesPnx = new XYSeries("Pn(x)");
         final XYSeries seriesRnx = new XYSeries("rn(x)");
@@ -59,26 +59,6 @@ public class GUI extends JFrame {
         } else {
             dataset.addSeries(seriesFx);
         }
-
-//        if (butPan.getFx()) {
-//            k[0] = 1;
-//            int i = 0;
-//            double x = -100;
-//            func.storeFx(step);
-//            final XYSeries series = new XYSeries("f(x)");
-//            double ay[] = func.getAy();
-//            double ax[] = func.getAx();
-//            while (x < 201) {
-//                i++;
-//                x += step;
-//            }
-////            for (x = butPan.getA(); x < butPan.getB(); x += step, i++) {
-////                series.add(x, ay[i]);
-////            }
-//            for ( int j = 0; j < i; j++)
-//                series.add(ax[j], ay[j]);
-//            dataset.addSeries(series);
-//        }
 
         double newStep;
         if(butPan.getPnx()) {
@@ -97,17 +77,9 @@ public class GUI extends JFrame {
 
         if (butPan.getRnx()) {
             func.setPnx(step, butPan.getA(), butPan.getB());
-            newStep = (Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
-            double x = butPan.getA();
-            do {
+            for (double x = butPan.getA(); x < butPan.getB(); x += step)
                 seriesRnx.add(x, func.rnx(x));
-                x += newStep;
-            } while (x < butPan.getB());
-            seriesRnx.add(butPan.getB(), func.rnx(butPan.getB()));
             dataset.addSeries(seriesRnx);
-//            for (double x = butPan.getA(); x < butPan.getB(); x += step)
-//                series.add(x, func.rnx(x));
-//            dataset.addSeries(series);
 
             double maxX = 0;
             double maxY = 0;
@@ -117,7 +89,6 @@ public class GUI extends JFrame {
                     maxY = func.rnx(i);
                 }
             }
-            maxX -= step;
             seriesDelta.add(maxX, maxY);
             dataset.addSeries(seriesDelta);
         } else {
