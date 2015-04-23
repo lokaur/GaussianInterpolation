@@ -54,11 +54,6 @@ public class InputPanel extends JPanel {
         JLabel label5 = new JLabel("Мартынов Андрей, гр.ИВТ-32БО");
         label5.setHorizontalAlignment(JLabel.LEFT);
         add(label5);
-
-//        JLabel label6 = new JLabel("Полином Гаусса");
-//        label6.setHorizontalAlignment(JLabel.LEFT);
-//        add(label6);
-
     }
 
     public double getAlpha() {

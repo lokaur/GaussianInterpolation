@@ -15,7 +15,7 @@ public class GUI extends JFrame {
     Gauss func = new Gauss();
 
     public GUI() {
-        setSize(1100, 500);
+        setSize(1050, 500);
         setLocationRelativeTo(null);
         setTitle("Gaussian Interpolation");
         setLayout(new FlowLayout());
