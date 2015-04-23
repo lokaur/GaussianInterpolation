@@ -46,10 +46,7 @@ public class GUI extends JFrame {
         double step = 0.01;
         final XYSeries seriesFx = new XYSeries("f(x)");
         final XYSeries seriesPnx = new XYSeries("Pn(x)");
-        final XYSeries seriesRnx = new XYSeries("rn(x)");
-        final XYSeries seriesDelta = new XYSeries("δ(rn(x))");
         final XYSeries seriesDFx = new XYSeries(("∂f(x)"));
-        final XYSeries seriesDPnx = new XYSeries(("∂Pn(x)"));
 
         if (butPan.getFx()) {
             for (double x = butPan.getA(); x < butPan.getB(); x += step) {
@@ -60,10 +57,9 @@ public class GUI extends JFrame {
             dataset.addSeries(seriesFx);
         }
 
-        double newStep;
         if(butPan.getPnx()) {
             func.setPnx(step, butPan.getA(), butPan.getB());
-            newStep = (Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
+            double newStep = (Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
             double x = butPan.getA();
             do {
                 seriesPnx.add(x, func.pnx(x));
@@ -75,27 +71,6 @@ public class GUI extends JFrame {
             dataset.addSeries(seriesPnx);
         }
 
-        if (butPan.getRnx()) {
-            func.setPnx(step, butPan.getA(), butPan.getB());
-            for (double x = butPan.getA(); x < butPan.getB(); x += step)
-                seriesRnx.add(x, func.rnx(x));
-            dataset.addSeries(seriesRnx);
-
-            double maxX = 0;
-            double maxY = 0;
-            for (double i = butPan.getA(); i < butPan.getB(); i += step) {
-                if(func.rnx(i) > maxY) {
-                    maxX =  i;
-                    maxY = func.rnx(i);
-                }
-            }
-            seriesDelta.add(maxX, maxY);
-            dataset.addSeries(seriesDelta);
-        } else {
-            dataset.addSeries(seriesRnx);
-            dataset.addSeries(seriesDelta);
-        }
-
         if (butPan.getDfx()) {
             for (double x = butPan.getA(); x < butPan.getB(); x += step) {
                 seriesDFx.add(x, func.dfx(x));
@@ -103,20 +78,6 @@ public class GUI extends JFrame {
             dataset.addSeries(seriesDFx);
         } else {
             dataset.addSeries(seriesDFx);
-        }
-
-        if (butPan.getDpnx()) {
-            func.setPnx(step, butPan.getA(), butPan.getB());
-            newStep = (Math.abs(butPan.getB()-butPan.getA()))/butPan.getNumPointsField();
-            double x = butPan.getA();
-            do {
-                seriesDPnx.add(x, func.dpnx(x));
-                x += newStep;
-            } while (x < butPan.getB());
-            seriesDPnx.add(butPan.getB(), func.dpnx(butPan.getB()));
-            dataset.addSeries(seriesDPnx);
-        } else {
-            dataset.addSeries(seriesDPnx);
         }
 
         return dataset;

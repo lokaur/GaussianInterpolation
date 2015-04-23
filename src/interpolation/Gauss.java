@@ -118,20 +118,11 @@ public class Gauss {
         do {
             i++;
         } while (ax[i] < x);
-        i--;
         p = (x - ax[i]) / h;
         y1 = p * diff[i][1];
         y2 = p * (p - 1) * diff[i - 1][2] / 2;
         y3 = p * (p - 1) * (p + 1) * diff[i - 2][3] / 6;
         y4 = p * (p - 1) * (p + 1) * (p - 2) * diff[i - 3][4] / 24;
         return (ay[i] + y1 + y2 + y3 + y4);
-    }
-
-    public double rnx(double x) {
-        return Math.abs(fx(x) - pnx(x));
-    }
-
-    public double dpnx(double x) {
-        return ((1/delta)*(pnx(x+delta)-pnx(x)));
     }
 }

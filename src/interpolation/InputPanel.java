@@ -18,9 +18,7 @@ public class InputPanel extends JPanel {
 
     private JCheckBox fx = new JCheckBox("f(x)");
     private JCheckBox pnx = new JCheckBox("Pn(x)");
-    private JCheckBox rnx = new JCheckBox("rn(x)");
     private JCheckBox dfx = new JCheckBox("∂f(x)");
-    private JCheckBox dpnx = new JCheckBox("∂Pn(x)");
     private JTextField delta = new JTextField(3);
 
     public JButton btn = new JButton("Построить");
@@ -107,16 +105,8 @@ public class InputPanel extends JPanel {
         return pnx.isSelected();
     }
 
-    public boolean getRnx() {
-        return rnx.isSelected();
-    }
-
     public boolean getDfx() {
         return dfx.isSelected();
-    }
-
-    public boolean getDpnx() {
-        return dpnx.isSelected();
     }
 
     public int getNumPointsField() {
@@ -177,11 +167,7 @@ public class InputPanel extends JPanel {
         panel.add(Box.createHorizontalStrut(10));
         panel.add(pnx);
         panel.add(Box.createHorizontalStrut(10));
-        panel.add(rnx);
-        panel.add(Box.createHorizontalStrut(10));
         panel.add(dfx);
-        panel.add(Box.createHorizontalStrut(10));
-        panel.add(dpnx);
         add(panel);
     }
 }

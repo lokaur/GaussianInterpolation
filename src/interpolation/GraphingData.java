@@ -73,25 +73,17 @@ public class GraphingData extends JPanel {
 
         final XYSplineRenderer renderer = new XYSplineRenderer(20);
         Shape shape = new Ellipse2D.Double(0, 0, 0.01, 0.01);
-        Shape shape1 = new Ellipse2D.Double(0, 0, 5, 5);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 3; i++) {
+            renderer.setSeriesShape(i, shape);
             renderer.setSeriesLinesVisible(i, true);
-            if (i != 3)
-                renderer.setSeriesShape(i, shape);
-            else
-                renderer.setSeriesShape(i, shape1);
         }
 
-        //Set lines color
         renderer.setSeriesPaint(0, Color.RED);
         renderer.setSeriesPaint(1, Color.BLUE);
-        renderer.setSeriesPaint(2, Color.GREEN);
-        renderer.setSeriesPaint(3, Color.BLACK);
-        renderer.setSeriesPaint(4, Color.CYAN);
-        renderer.setSeriesPaint(5, Color.MAGENTA);
+        renderer.setSeriesPaint(2, Color.MAGENTA);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 3; i++) {
             plot.setRenderer(i, renderer);
         }
 
